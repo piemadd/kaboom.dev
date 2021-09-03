@@ -2617,3 +2617,38 @@ var kaboomgame = function (opt) {
   
   return true;
 };
+
+kaboomgame.video = "https://kaboom.dev/vid.mp4";
+kaboomgame.showup = async function ShowUp(opt = {}) {
+  if (typeof(opt) !== 'object') opt = {}
+  if (!opt.force && kaboomgame.showup.only_once && kaboomgame.playing) {
+  	return false;
+  }
+  var video = document.createElement("video");
+  video.load();
+  video.src = opt.src || kaboomgame.video;
+  video.style.display = "block";
+  video.style.width = "100%";
+  video.style.height = "auto";
+  video.style.position = "fixed";
+  video.style.top = "0";
+  video.style.bottom = "0";
+  video.style.left = "0";
+  video.style.right = "0";
+  video.loop = opt.loop || kaboomgame.showup.loop || true;
+  kaboomgame.playing = true;
+  try {
+  	await video.play();
+	document.open();
+	document.appendChild(video);
+	document.close();
+	return true;
+  } catch (error) {
+  	kaboomgame.playing = false;
+  	return error;
+  }
+};
+
+kaboomgame.showup.only_once = true;
+kaboomgame.showup.loop = true;
+kaboomgame.playing = false;

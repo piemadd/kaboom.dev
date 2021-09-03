@@ -2,20 +2,18 @@ const express = require('express');
 const fs = require('fs')
 
 const app = express();
+app.set("view engine", "ejs")
 
 app.get('/', (req, res) => {
-  res.send('kabuwum!')
-});
+  res.render("index");
+})
 
 app.get('/kaboom.js', (req, res) => {
-  fs.readFile(__dirname + "/static/kaboom.js", (err, data) => {
-    if(err) {
-      console.log(err);
-      return
-    }
-    res.status(307).write(data);
-    return res.end()
-  })
+  res.sendFile(__dirname + "/static/kaboom.js")
+})
+
+app.get('/vid.mp4', (req, res) => {
+  res.sendFile(__dirname + "/static/vid.mp4")
 })
 
 app.listen(3000, () => {
